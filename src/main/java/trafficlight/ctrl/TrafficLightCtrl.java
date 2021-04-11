@@ -1,12 +1,12 @@
 package trafficlight.ctrl;
 
 import trafficlight.gui.TrafficLightGui;
-import trafficlight.states.GreenState;
-import trafficlight.states.RedState;
-import trafficlight.states.State;
-import trafficlight.states.YellowState;
+import trafficlight.states.*;
 
 public class TrafficLightCtrl {
+
+    // neue Instance auf NULL setzen
+    private static TrafficLightCtrl instance = null;
 
     private State greenState;
 
@@ -28,17 +28,21 @@ public class TrafficLightCtrl {
         gui.setVisible(true);
     }
 
-    // methode getInstance
+    // methode getInstance für Singleton
     public static TrafficLightCtrl getInstance() {
-        TrafficLightCtrl ctrl = new TrafficLightCtrl();
-        return ctrl;
+        if(instance == null)
+        {
+            instance = new TrafficLightCtrl();
+        }
+        return instance;
     }
 
     private void initStates() {
         //TODO create the states and set current and previous state
-        RedState redState = new RedState();
-        YellowState yellowState = new YellowState();
-        GreenState greenState = new GreenState();
+        redState = new RedState(this);
+        yellowState = new YellowState(this);
+        greenState = new GreenState(this);
+        currentState = new NeutralState(this);
     }
 
     public State getGreenState() {
@@ -75,7 +79,8 @@ public class TrafficLightCtrl {
 
     public void nextState() {
         //TODO handle GUi request and update GUI
-
+        currentState.nextState();
+        gui.setLight(currentState.getState());
     }
 
 }

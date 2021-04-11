@@ -3,6 +3,7 @@ package trafficlight.states;
 import trafficlight.ctrl.TrafficLightCtrl;
 
 public class GreenState implements State {
+
     private TrafficLightCtrl ctrl;
 
     public GreenState(TrafficLightCtrl ctrl) {
@@ -11,11 +12,13 @@ public class GreenState implements State {
 
     @Override
     public void nextState() {
-
+        ctrl.setCurrentState(ctrl.getYellowState());
+        ctrl.setPreviousState(this);
     }
 
     @Override
     public TrafficLightColor getState() {
-        return null;
+        return TrafficLightColor.GREEN;
     }
+
 }
